@@ -1,0 +1,15 @@
+{
+  "name": "five",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start"
+  },
+  "dependencies": {
+    "firebase": "^2.4.1",
+    "react-native": "^0.20.0",
+    "react-native-swiper": "^1.4.3",
+    "react-redux": "^4.4.0",
+    "redux": "^3.3.1"
+  }
+}
