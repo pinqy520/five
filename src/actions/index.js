@@ -1,4 +1,3 @@
-/* @flow */
 
 export const showPaperList = (data) => {
     return {

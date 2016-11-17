@@ -1,6 +1,6 @@
-/* @flow */
-
-import React, { View, Component, StyleSheet, Text } from 'react-native'
+import * as React from 'react'
+import { Component } from 'react'
+import { View, StyleSheet, Text } from 'react-native'
 
 
 export default class Tag extends Component {

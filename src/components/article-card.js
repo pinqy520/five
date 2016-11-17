@@ -1,18 +1,17 @@
-/* @flow */
-
-import React, { View, Component, StyleSheet, Text, Image, TouchableWithoutFeedback } from 'react-native'
-import Dimensions from 'Dimensions'
+import * as React from 'react'
+import { Component } from 'react'
+import { View, StyleSheet, Text, Image, TouchableWithoutFeedback, Dimensions } from 'react-native'
 
 import Tag from './tag.js'
 
 export default class ArticleCard extends Component {
-    render () {
+    render() {
         return (
             <View style={[styles.card, this.props.style]}>
-                <TouchableWithoutFeedback onPress={this.props.onPress} style={{flex: 1}}>
-                    <View style={{flex: 1}}>
+                <TouchableWithoutFeedback onPress={this.props.onPress} style={{ flex: 1 }}>
+                    <View style={{ flex: 1 }}>
                         <View style={styles.fromInfo}>
-                            <Image style={styles.fromImage} source={{uri: this.props.data.fromImage}} />
+                            <Image style={styles.fromImage} source={{ uri: this.props.data.fromImage }} />
                             <View style={styles.from}>
                                 <View>
                                     <Text style={styles.authorText}>{this.props.data.fromAuthor}</Text>
@@ -23,15 +22,15 @@ export default class ArticleCard extends Component {
                             </View>
                         </View>
                         <View style={styles.articleImageArea}>
-                            <Image style={styles.articleImage} source={{uri: this.props.data.image}} />
+                            <Image style={styles.articleImage} source={{ uri: this.props.data.image }} />
                         </View>
                         <View style={styles.articleInfo}>
                             <Text style={styles.articleTitleText} numberOfLines={2}>{this.props.data.title}</Text>
                             <Text style={styles.articleDescText} numberOfLines={descLines}>{this.props.data.desc}</Text>
                             <View style={styles.tags}>
-                            {
-                                this.props.data.tags.map((v, i) => <Tag style={styles.tag} label={v} key={i}/>)
-                            }
+                                {
+                                    this.props.data.tags.map((v, i) => <Tag style={styles.tag} label={v} key={i} />)
+                                }
                             </View>
                             <Text style={styles.entry}>点击阅读</Text>
                         </View>
@@ -43,7 +42,7 @@ export default class ArticleCard extends Component {
 }
 
 ArticleCard.defaultProps = {
-    onPress() {}
+    onPress() { }
 }
 
 const windowHeight = Dimensions.get('window').height

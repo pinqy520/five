@@ -1,6 +1,6 @@
-/* @flow */
-
-import React, { View, Component, StyleSheet, Dimensions, WebView, PanResponder, Animated } from 'react-native'
+import * as React from 'react'
+import { Component } from 'react'
+import { View, StyleSheet, Dimensions, WebView, PanResponder, Animated } from 'react-native'
 
 import Loading from './loading.js'
 
@@ -9,7 +9,7 @@ export default class Paper extends Component {
     _panResponder;
     url;
     releasePos;
-    constructor (...args) {
+    constructor(...args) {
         super(...args)
         this.state = {
             webviewRotateZ: new Animated.Value(0),
@@ -19,18 +19,18 @@ export default class Paper extends Component {
         }
         this.url = false
     }
-    componentWillReceiveProps (nextProps) {
+    componentWillReceiveProps(nextProps) {
         if (nextProps.url && nextProps.url !== this.url) {
             this.state.loading = true
             this.url = nextProps.url
         }
     }
-    componentDidUpdate (prevProps) {
-        if(prevProps.url && !this.props.url) {
+    componentDidUpdate(prevProps) {
+        if (prevProps.url && !this.props.url) {
             // console.log(this.state.webviewTranslateX)
             this.resetPosition(this.move)
         }
-        if(this.props.url && prevProps.url !== this.props.url) {
+        if (this.props.url && prevProps.url !== this.props.url) {
             this.state.webviewTranslateY.setValue(windowHeight)
             this.resetPosition(0)
         }
@@ -38,16 +38,16 @@ export default class Paper extends Component {
 
 
 
-    resetPosition (status = 0) {
+    resetPosition(status = 0) {
         status = status > 0 ? 1 : (status < 0 ? -1 : status);
         Animated.parallel([
-            Animated.spring(this.state.webviewRotateZ, { toValue: 2*windowWidth*status }),
-            Animated.spring(this.state.webviewTranslateX, { toValue: 2*windowWidth*status }),
+            Animated.spring(this.state.webviewRotateZ, { toValue: 2 * windowWidth * status }),
+            Animated.spring(this.state.webviewTranslateX, { toValue: 2 * windowWidth * status }),
             Animated.spring(this.state.webviewTranslateY, { toValue: 0 }),
         ]).start()
     }
 
-    componentWillMount(){
+    componentWillMount() {
         let startX = false
         let webviewResponderMode = false
 
@@ -56,7 +56,7 @@ export default class Paper extends Component {
             onMoveShouldSetPanResponder: (evt, gestureState) => true,
             onPanResponderMove: (evt, gestureState) => {
                 if (!webviewResponderMode) {
-                    if(Math.abs(gestureState.dy) * 3 > Math.abs(gestureState.dx)
+                    if (Math.abs(gestureState.dy) * 3 > Math.abs(gestureState.dx)
                         || gestureState.dy < -0.5) {
                         webviewResponderMode = 'reading'
                     } else {
@@ -90,7 +90,7 @@ export default class Paper extends Component {
             },
         })
     }
-    render () {
+    render() {
         if (!this.url) {
             return null;
         }
@@ -102,7 +102,7 @@ export default class Paper extends Component {
                         transform: [
                             {
                                 rotateZ: this.state.webviewRotateZ.interpolate({
-                                    inputRange: [-windowWidth*2, windowWidth*2],
+                                    inputRange: [-windowWidth * 2, windowWidth * 2],
                                     outputRange: ['-80deg', '80deg']
                                 })
                             }, {
@@ -113,7 +113,7 @@ export default class Paper extends Component {
                         ]
                     },
                 ]}>
-                <WebView source={{uri: this.url}} onLoadEnd={() => this.setState({loading: false})} />
+                <WebView source={{ uri: this.url }} onLoadEnd={() => this.setState({ loading: false })} />
                 <Loading show={this.state.loading} text={'页面加载中...'} style={styles.loading} />
             </Animated.View>
         )
@@ -121,7 +121,7 @@ export default class Paper extends Component {
 }
 
 Paper.defaultProps = {
-    onCancel() {}
+    onCancel() { }
 }
 
 const windowWidth = Dimensions.get('window').width

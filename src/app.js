@@ -1,9 +1,9 @@
-/* @flow */
-
-import React, { View, Component, StyleSheet, Text, Image, Platform, Dimensions } from 'react-native'
+import * as React from 'react'
+import { Component } from 'react'
+import { View, StyleSheet, Text, Image, Platform, Dimensions } from 'react-native'
 
 import Swiper from 'react-native-swiper'
-import DB from 'firebase'
+import * as firebase from 'firebase'
 
 import { showPaperList } from './actions'
 import { connect } from 'react-redux'
@@ -12,7 +12,17 @@ import ArticleCard from './components/article-card.js'
 import Paper from './components/paper.js'
 import Loading from './components/loading.js'
 
-const lastestRef = new DB('https://flickering-heat-5152.firebaseio.com/lastest')
+// Initialize Firebase
+const config = {
+    apiKey: "AIzaSyBXoXdWcHdvihMtQRUs4TKd3gcMCPjaPa4",
+    authDomain: "flickering-heat-5152.firebaseapp.com",
+    databaseURL: "https://flickering-heat-5152.firebaseio.com",
+    storageBucket: "flickering-heat-5152.appspot.com",
+    messagingSenderId: "1038664267499"
+}
+const firebaseApp = firebase.initializeApp(config)
+
+// const lastestRef = new DB('https://flickering-heat-5152.firebaseio.com/lastest')
 
 class App extends Component {
     swiper;
@@ -23,7 +33,7 @@ class App extends Component {
         }
     }
     componentDidMount() {
-        lastestRef.on('value', (snapshot) => {
+        firebaseApp.database().ref().child('lastest').on('value', (snapshot) => {
             this.props.dispatch(showPaperList(snapshot.val()))
         })
     }
@@ -31,10 +41,10 @@ class App extends Component {
         if (this.props.list.length === '' || this.props.list !== nextProps.list) {
             this.swiper = (
                 <Swiper style={styles.swiper} loop={false} bounces={true} showsPagination={Platform.OS === 'ios'}
-                    dot={<View style={styles.swiperDot}/>}
-                    activeDot={<View style={styles.swiperActiveDot}/>}>
+                    dot={<View style={styles.swiperDot} />}
+                    activeDot={<View style={styles.swiperActiveDot} />}>
                     {
-                        nextProps.list.map((v, i) => <View style={styles.swiperItem} key={i}><ArticleCard onPress={() => this.handlePaperEnter(v.url)} style={{flex: 1}} data={v} /></View>)
+                        nextProps.list.map((v, i) => <View style={styles.swiperItem} key={i}><ArticleCard onPress={() => this.handlePaperEnter(v.url)} style={{ flex: 1 }} data={v} /></View>)
                     }
                 </Swiper>
             )
@@ -54,21 +64,21 @@ class App extends Component {
         const { dispatch } = this.props
 
         if (this.props.date === '') {
-            return <Loading show={true} text={'数据拉取中...'} style={{flex: 1, justifyContent: 'center', alignItems: 'center'}} />
+            return <Loading show={true} text={'数据拉取中...'} style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} />
         }
         return (
             <View style={styles.body}>
                 <View style={styles.timeTag}>
                     <Text style={styles.timeTagText}>{this.props.date}</Text>
                 </View>
-                { this.swiper }
+                {this.swiper}
                 <Paper url={this.state.url} onCancel={() => this.handlePaperCancel()} />
             </View>
         )
     }
 }
 
-function select (state) {
+function select(state) {
     console.log(state)
     return {
         date: state.date,
